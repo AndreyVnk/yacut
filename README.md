@@ -1,7 +1,7 @@
 ## YaCut
 
 **Stack:**
-* Python 3
+* Python 3.9
 * Flask 2
 * SQLAlchemy
 * SQLite
