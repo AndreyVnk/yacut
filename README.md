@@ -4,6 +4,7 @@
 * Python 3
 * Flask 2
 * SQLAlchemy
+* SQLite
 
 ### DESCRIPTION
 
