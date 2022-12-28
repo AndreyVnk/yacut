@@ -1,4 +1,4 @@
-from flask import abort, flash, redirect, render_template
+from flask import flash, redirect, render_template
 
 from . import BASE_URL, app, db
 from .forms import LinkForm
@@ -15,11 +15,11 @@ def index_view():
         custom_id = form.custom_id.data
         if URLMap.query.filter_by(short=custom_id).first():
             flash('Имя {} уже занято!'.format(custom_id))
-            return render_template('main.html', form=form)
+            return render_template('yacut/main.html', form=form)
         if custom_id is not None and not check_allowed_symbols(custom_id):
             flash('Указан недопустимый символ в короткой ссылке. '
                   'Достпустимые символы: A-z, 0-9.')
-            return render_template('main.html', form=form)
+            return render_template('yacut/main.html', form=form)
         if custom_id is None or custom_id == '':
             custom_id = get_unique_short_id()
 
@@ -29,14 +29,12 @@ def index_view():
         )
         db.session.add(urlMap)
         db.session.commit()
-        return render_template('main.html', form=form, short_link=BASE_URL + urlMap.short,
+        return render_template('yacut/main.html', form=form, short_link=BASE_URL + urlMap.short,
                                original_link=urlMap.original)
-    return render_template('main.html', form=form)
+    return render_template('yacut/main.html', form=form)
 
 
 @app.route('/<string:short>', methods=['GET'])
 def redirect_to(short):
-    url = URLMap.query.filter_by(short=short).first()
-    if url:
-        return redirect(url.original)
-    abort(404)
+    url = URLMap.query.filter_by(short=short).first_or_404()
+    return redirect(url.original)

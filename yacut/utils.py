@@ -2,6 +2,7 @@ from random import shuffle
 from string import ascii_letters, digits
 
 ALLOWED_SYMBOLS = ascii_letters + digits
+MAX_LENGTH = 16
 
 
 def get_unique_short_id():
